@@ -1,4 +1,5 @@
 use ezio::stdio;
+use itertools::Itertools;
 
 fn main() -> anyhow::Result<()> {
     let mut elves = vec![];
@@ -14,7 +15,12 @@ fn main() -> anyhow::Result<()> {
     }
     elves.push(current);
 
-    let ans = elves.iter().map(|e| e.iter().sum::<i32>()).max().unwrap();
+    let ans = elves
+        .iter()
+        .map(|e| e.iter().sum::<i32>())
+        .sorted_by_key(|&c| std::cmp::Reverse(c))
+        .take(3)
+        .sum::<i32>();
     println!("{}", ans);
 
     Ok(())

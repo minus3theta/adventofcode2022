@@ -46,10 +46,14 @@ fn main() -> anyhow::Result<()> {
         for v in 0..valves.len() {
             for u in 0..valves.len() {
                 for opened in 0..1 << positive {
+                    let current = dp[t][v][u][opened];
+                    if current < 0 {
+                        continue;
+                    }
                     for move_v in moves(v, opened, true, &valves) {
                         let include_open = v != u;
                         for move_u in moves(u, opened, include_open, &valves) {
-                            let mut current = dp[t][v][u][opened];
+                            let mut current = current;
                             let mut next_opened = opened;
                             let next_v = match move_v {
                                 Move::Open(flow) => {
